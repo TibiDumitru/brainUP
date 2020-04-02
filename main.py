@@ -5,14 +5,13 @@ import re
 
 app = Flask(__name__)
 
-# Change this to your secret key (can be anything, it's for extra protection)
-app.secret_key = 'nimeni nu stie'
+app.secret_key = 'vinti_fara_restante'
 
 # Enter your database connection details below
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'parola10'
-app.config['MYSQL_DB'] = 'pythonlogin'
+app.config['MYSQL_HOST'] = 'sql7.freemysqlhosting.net'
+app.config['MYSQL_USER'] = 'sql7330808'
+app.config['MYSQL_PASSWORD'] = 'i8AwCUhJaT'
+app.config['MYSQL_DB'] = 'sql7330808'
 
 # Intialize MySQL
 mysql = MySQL(app)
