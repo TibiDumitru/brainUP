@@ -5,20 +5,23 @@ import re
 
 app = Flask(__name__)
 
-# Change this to your secret key (can be anything, it's for extra protection)
-app.secret_key = 'nimeni nu stie'
+app.secret_key = 'vinti_fara_restante'
 
 # Enter your database connection details below
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'parola10'
-app.config['MYSQL_DB'] = 'pythonlogin'
+app.config['MYSQL_HOST'] = 'sql7.freemysqlhosting.net'
+app.config['MYSQL_USER'] = 'sql7330808'
+app.config['MYSQL_PASSWORD'] = 'i8AwCUhJaT'
+app.config['MYSQL_DB'] = 'sql7330808'
 
 # Intialize MySQL
 mysql = MySQL(app)
 
-# http://localhost:5000/pythonlogin/ - this will be the login page, we need to use both GET and POST requests
-@app.route('/pythonlogin/', methods=['GET', 'POST'])
+@app.route('/')
+def init():
+    return render_template('index.html')
+
+# http://localhost:5000/login/ - this will be the login page, we need to use both GET and POST requests
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
     # Output message if something goes wrong...
     msg = ''
@@ -45,12 +48,12 @@ def login():
                 # Account doesnt exist or username/password incorrect
                 msg = 'Incorrect username/password!'
         except MySQLdb.OperationalError:
-            msg = "ERROR\nCould not connect to MySQL!"
+            msg = "ERROR: Could not connect to MySQL!"
     # Show the login form with message (if any)
-    return render_template('index.html', msg=msg)
+    return render_template('login.html', msg=msg)
 
-# http://localhost:5000/python/logout - this will be the logout page
-@app.route('/pythonlogin/logout')
+# http://localhost:5000/logout - this will be the logout page
+@app.route('/logout')
 def logout():
     # Remove session data, this will log the user out
    session.pop('loggedin', None)
@@ -59,33 +62,37 @@ def logout():
    # Redirect to login page
    return redirect(url_for('login'))
 
-# http://localhost:5000/pythinlogin/register - this will be the registration page, we need to use both GET and POST requests
-@app.route('/pythonlogin/register', methods=['GET', 'POST'])
+# http://localhost:5000/register - this will be the registration page, we need to use both GET and POST requests
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     # Output message if something goes wrong...
     msg = ''
     # Check if "username", "password" and "email" POST requests exist (user submitted form)
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form:
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form and 'name' in request.form:
         # Create variables for easy access
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
+        name = request.form['name']
         # Check if account exists using MySQL
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
+        cursor.execute('SELECT * FROM accounts WHERE username = %s or email = %s', (username, email,))
         account = cursor.fetchone()
         # If account exists show error and validation checks
         if account:
             msg = 'Account already exists!'
+        elif not re.match(r'[A-Z][A-Za-z' ']+', name):
+            msg = 'Invalid name!'
         elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
             msg = 'Invalid email address!'
         elif not re.match(r'[A-Za-z0-9]+', username):
             msg = 'Username must contain only characters and numbers!'
-        elif not username or not password or not email:
+        elif not username or not password or not email or not name:
             msg = 'Please fill out the form!'
         else:
             # Account doesnt exists and the form data is valid, now insert new account into accounts table
-            cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s)', (username, password, email,))
+            # (id, username, password, email, name, category)
+            cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s)', (username, password, name, "Tutorial", email,))
             mysql.connection.commit()
             msg = 'You have successfully registered!'
     elif request.method == 'POST':
@@ -94,8 +101,8 @@ def register():
     # Show registration form with message (if any)
     return render_template('register.html', msg=msg)
 
-# http://localhost:5000/pythinlogin/home - this will be the home page, only accessible for loggedin users
-@app.route('/pythonlogin/home')
+# http://localhost:5000/home - this will be the home page, only accessible for loggedin users
+@app.route('/home')
 def home():
     # Check if user is loggedin
     if 'loggedin' in session:
@@ -104,8 +111,8 @@ def home():
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
-# http://localhost:5000/pythinlogin/profile - this will be the profile page, only accessible for loggedin users
-@app.route('/pythonlogin/profile')
+# http://localhost:5000/profile - this will be the profile page, only accessible for loggedin users
+@app.route('/profile')
 def profile():
     # Check if user is loggedin
     if 'loggedin' in session:
