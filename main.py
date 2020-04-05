@@ -5,14 +5,13 @@ import re
 
 app = Flask(__name__)
 
-
 app.secret_key = 'vinti_fara_restante'
 
 # Enter your database connection details below
-app.config['MYSQL_HOST'] = 'sql7.freemysqlhosting.net'
-app.config['MYSQL_USER'] = 'sql7330808'
-app.config['MYSQL_PASSWORD'] = 'i8AwCUhJaT'
-app.config['MYSQL_DB'] = 'sql7330808'
+app.config['MYSQL_HOST'] = 'brainUP.mysql.pythonanywhere-services.com'
+app.config['MYSQL_USER'] = 'brainUP'
+app.config['MYSQL_PASSWORD'] = 'paroladatabase'
+app.config['MYSQL_DB'] = 'brainUP$database'
 
 # Intialize MySQL
 mysql = MySQL(app)
@@ -61,7 +60,7 @@ def logout():
    session.pop('id', None)
    session.pop('username', None)
    # Redirect to login page
-   return redirect(url_for('login'))
+   return redirect(url_for('init'))
 
 # http://localhost:5000/register - this will be the registration page, we need to use both GET and POST requests
 @app.route('/register', methods=['GET', 'POST'])
@@ -125,3 +124,13 @@ def profile():
         return render_template('profile.html', account=account)
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
+
+@app.route('/home/single-player')
+def single_player():
+    return render_template('single_player.html')
+
+@app.route('/home/multi-player')
+def multi_player():
+    return render_template('multi_player.html')
+
+

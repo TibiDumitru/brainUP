@@ -44,21 +44,37 @@ body {
 <div class="slideshow-container">
 
 <div class="mySlides">
-  <q>Welcome back, {{username}}</q>
+  <p>Welcome back, {{username}}</p>
 </div>
 
 <div class="mySlides">
-  <q>Fact of the day</q>
+    <p>Fact of the day:</p>
+    <p id="fact"></p>
+    <script>
+        var facts = [
+            "The first computer was invented in the 1940s.",
+            "Space smells like seared steak.",
+            "The longest wedding veil was the same length as 63.5 football fields.",
+            "The unicorn is the national animal of Scotland.",
+            "Kids ask 300 questions a day.",
+            "The total weight of ants on earth once equaled the total weight of people.",
+            "'E' is the most common letter and appears in 11 percent of all english words.",
+            "The healthiest place in the world is in Panama.",
+        ];
+
+        var item = facts[Math.floor(Math.random() * facts.length)];
+        document.getElementById("fact").innerHTML = item;
+
+    </script>
 </div>
 
 <div class="mySlides">
-  <q>Enjoy brainUP</q>
+  <p>What are you up to today?</p>
 </div>
 
 <a class="prev" onclick="plusSlides(-1)">❮</a>
 <a class="next" onclick="plusSlides(1)">❯</a>
 
-</div>
 
 <div class="dot-container">
   <span class="dot" onclick="currentSlide(1)"></span>
@@ -93,7 +109,7 @@ function showSlides(n) {
   }
   slides[slideIndex-1].style.display = "block";
   dots[slideIndex-1].className += " active";
-  setTimeout(showSlides, 2000); // Change image every 2 seconds
+  setTimeout(showSlides, 5000); // Change image every 2 seconds
 }
 </script>
 
@@ -108,9 +124,18 @@ body {
 
 <br>
 <!-- Play box -->
-<div id="play-box">Aici o sa vina butoanele de play.
-    Sper ca am facut chenarul asta dependent de dimensiunile ecranului ca sa se vada ok la toti.
 
+<div id="play-box">
+    <button onclick="location.href='{{ url_for('single_player') }}'" class="button" style="margin:0px 100px">
+        <span>
+            Single player mode
+        </span>
+    </button>
+    <button onclick="location.href='{{ url_for('single_player') }}'" class="button" style="margin: 0 0 0 100px">
+        <span>
+            Multi player mode
+        </span>
+    </button>
 </div>
 
 </body>

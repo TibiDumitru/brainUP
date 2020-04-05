@@ -1,7 +1,34 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<p> TEAPA! </p>
-	</head>
-
+<head>
+<meta charset=utf-8" />
+<title>brainUP</title>
+<link href="http://fonts.googleapis.com/css?family=Didact+Gothic" rel="stylesheet" />
+<link rel="stylesheet" href="{{ url_for('static', filename='style-index.css') }}">
+</head>
+<body>
+<div id="header-wrapper">
+	<div id="header" class="container">
+		<div id="logo">
+			<h1><a  href="{{ url_for('init') }}">SmellsLikeTeamSpirit</a></h1>
+		</div>
+		<div id="menu">
+			<ul>
+				<li><a href="{{ url_for('home') }}" accesskey="1" title="">Homepage</a></li>
+				<li><a href="#" accesskey="3" title="">About Us</a></li>
+				<li><a href="#" accesskey="5" title="">Contact Us</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="banner" class="container">
+		<div class="title">
+			<h2>brainUP</h2>
+			<span class="byline">Your new favourite app!</span>
+		</div>
+		<ul class="actions">
+			<li><a href="{{ url_for('login') }}" class="button">Login</a></li>
+			<li><a href="{{ url_for('register') }}" class="button">Register</a></li
+		</ul>
+	</div>
+</div>
+</body>
 </html>

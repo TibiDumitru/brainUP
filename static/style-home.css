@@ -64,15 +64,16 @@ body {
 /* Slides */
 .mySlides {
   display: none;
-  padding: 80px;
+  padding: 60px;
   text-align: center;
+  font-size: 24px;
 }
 
 /* Next & previous buttons */
 .prev, .next {
   cursor: pointer;
   position: absolute;
-  top: 50%;
+  top: 20%;
   width: auto;
   margin-top: -30px;
   padding: 16px;
@@ -120,9 +121,6 @@ body {
   background-color: #1A253F;
 }
 
-/* Add an italic font style to all quotes */
-q {font-style: italic;}
-
 #play-box {
   width: auto;
   height: 40vh;
@@ -131,4 +129,46 @@ q {font-style: italic;}
   border-style: solid;
   border-color: #1A253F;
   box-sizing: border-box;
+  background-color: #ffffff;
 }
+
+.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #1A253F;
+  border: none;
+  color: #EDD7C2;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+  width: 370px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
