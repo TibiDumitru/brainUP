@@ -1,8 +1,143 @@
-{% extends 'layout.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style-home.css') }}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+</head>
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a>
+    <a href="{{ url_for('profile') }}"><i class="fas fa-user-circle"></i> My profile</a>
+    <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+<div id="main">
+  <span style="font-size:30px;color:#1A253F;cursor:pointer" onclick="openNav()">&#9776 Menu</span>
+</div>
+<!-- Side bar functions -->
+<script>
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+    document.body.style.backgroundColor ="rgba(0,0,0,0.4)";
+}
 
-{% block title %}Home{% endblock %}
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
+    document.body.style.backgroundColor = "white";
+}
+</script>
 
-{% block content %}
-<h2>Home Page</h2>
-<p>Welcome back, {{ username }}!</p>
-{% endblock %}
+<div id="content">
+<style>
+* {box-sizing: border-box}
+body {
+    font-family: Verdana, sans-serif;
+    margin:0;
+}
+</style>
+
+<body>
+
+<div class="slideshow-container">
+
+<div class="mySlides">
+  <p>Welcome back, {{username}}</p>
+</div>
+
+<div class="mySlides">
+    <p>Fact of the day:</p>
+    <p id="fact"></p>
+    <script>
+        var facts = [
+            "The first computer was invented in the 1940s.",
+            "Space smells like seared steak.",
+            "The longest wedding veil was the same length as 63.5 football fields.",
+            "The unicorn is the national animal of Scotland.",
+            "Kids ask 300 questions a day.",
+            "The total weight of ants on earth once equaled the total weight of people.",
+            "'E' is the most common letter and appears in 11 percent of all english words.",
+            "The healthiest place in the world is in Panama.",
+        ];
+
+        var item = facts[Math.floor(Math.random() * facts.length)];
+        document.getElementById("fact").innerHTML = item;
+
+    </script>
+</div>
+
+<div class="mySlides">
+  <p>What are you up to today?</p>
+</div>
+
+<a class="prev" onclick="plusSlides(-1)">❮</a>
+<a class="next" onclick="plusSlides(1)">❯</a>
+
+
+<div class="dot-container">
+  <span class="dot" onclick="currentSlide(1)"></span>
+  <span class="dot" onclick="currentSlide(2)"></span>
+  <span class="dot" onclick="currentSlide(3)"></span>
+</div>
+
+<!-- Slide show automatic movement -->
+<script>
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  slideIndex++;
+  if (slideIndex > slides.length) {slideIndex = 1}
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+  setTimeout(showSlides, 5000); // Change image every 2 seconds
+}
+</script>
+
+<style>
+* {box-sizing: border-box}
+body {
+    font-family: Verdana, sans-serif;
+    margin:0;
+}
+
+</style>
+
+<br>
+<!-- Play box -->
+
+<div id="play-box">
+    <button onclick="location.href='{{ url_for('single_player') }}'" class="button" style="margin:0px 100px">
+        <span>
+            Single player mode
+        </span>
+    </button>
+    <button onclick="location.href='{{ url_for('single_player') }}'" class="button" style="margin: 0 0 0 100px">
+        <span>
+            Multi player mode
+        </span>
+    </button>
+</div>
+
+</body>
+</div>
+</html>
