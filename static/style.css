@@ -5,8 +5,8 @@
   	-webkit-font-smoothing: antialiased;
   	-moz-osx-font-smoothing: grayscale;
 }
-body {
-  	background-color: #435165;
+.body-log-reg {
+  	background-color: #1A253F;
   	margin: 0;
 }
 .login, .register {
@@ -17,28 +17,34 @@ body {
 }
 .login h1, .register h1 {
   	text-align: center;
-  	color: #5b6574;
+  	color: #1A253F;
   	font-size: 24px;
   	padding: 20px 0 20px 0;
-  	border-bottom: 1px solid #dee0e4;
+  	border-bottom: 1px solid #ffffff;
+  	background-image: url(logo.png);
+  	background-repeat: no-repeat;
+  	background-size: cover;
+  	background-position: center;
+    width: 400px;
+    height: 280px;
 }
 .login .links, .register .links {
   	display: flex;
   	padding: 0 15px;
 }
 .login .links a, .register .links a {
-  	color: #adb2ba;
+  	color: #1A253F;
   	text-decoration: none;
   	display: inline-flex;
   	padding: 0 10px 10px 10px;
   	font-weight: bold;
 }
 .login .links a:hover, .register .links a:hover {
-  	color: #9da3ac;
+  	color: #EDD7C2;
 }
 .login .links a.active, .register .links a.active {
-  	border-bottom: 3px solid #3274d6;
-  	color: #3274d6;
+  	border-bottom: 3px solid #1A253F;
+  	color: #1A253F;
 }
 .login form, .register form {
   	display: flex;
@@ -52,31 +58,35 @@ body {
   	align-items: center;
   	width: 50px;
   	height: 50px;
-  	background-color: #3274d6;
-  	color: #ffffff;
+  	background-color: #1A253F;
+  	color: #EDD7C2;
 }
 .login form input[type="password"], .login form input[type="text"], .login form input[type="email"], .register form input[type="password"], .register form input[type="text"], .register form input[type="email"] {
   	width: 310px;
   	height: 50px;
-  	border: 1px solid #dee0e4;
+  	border: 1px solid #EDD7C2;
   	margin-bottom: 20px;
   	padding: 0 15px;
+  	background-color: #EDD7C2;
 }
 .login form input[type="submit"], .register form input[type="submit"] {
   	width: 100%;
   	padding: 15px;
   	margin-top: 20px;
-  	background-color: #3274d6;
-  	border: 0;
+  	background-color: #1A253F;
+  	border: 10;
   	cursor: pointer;
   	font-weight: bold;
-  	color: #ffffff;
+  	color: #EDD7C2;
   	transition: background-color 0.2s;
 }
 .login form input[type="submit"]:hover, .register form input[type="submit"]:hover {
-  	background-color: #2868c7;
+  	background-color: #EDD7C2;
+  	color: #1A253F;
   	transition: background-color 0.2s;
 }
+
+/*TODO -> sterge dupa ce modif toate pag initiale */
 .navtop {
   	background-color: #2f3947;
   	height: 60px;
@@ -146,6 +156,9 @@ body.loggedin {
 	margin: 0 0 10px 0;
 }
 
-.button a {
-    font-size: 30px;
+img{
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 150px;
 }
