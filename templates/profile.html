@@ -1,28 +1,162 @@
-{% extends 'layout.html' %}
-
-{% block title %}Profile{% endblock %}
-
-{% block content %}
-<h2>Profile Page</h2>
-<div>
-    <p>Your account details are below:</p>
-    <table>
-        <tr>
-            <td>Username:</td>
-            <td>{{ account['username'] }}</td>
-        </tr>
-        <tr>
-            <td>Name:</td>
-            <td>{{ account['name'] }}</td>
-        </tr>
-        <tr>
-            <td>Email:</td>
-            <td>{{ account['email'] }}</td>
-        </tr>
-        <tr>
-            <td>Preferred Category:</td>
-            <td>{{ account['category'] }}</td>
-        </tr>
-    </table>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style-home.css') }}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+</head>
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a>
+    <a href="{{ url_for('profile') }}"><i class="fas fa-user-circle"></i> My profile</a>
+    <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
 </div>
-{% endblock %}
+<div id="main">
+  <span style="font-size:30px;color:#1A253F;cursor:pointer" onclick="openNav()">&#9776 Menu</span>
+</div>
+<!-- Side bar functions -->
+<script>
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+    document.body.style.backgroundColor ="rgba(0,0,0,0.4)";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
+    document.body.style.backgroundColor = "white";
+}
+</script>
+
+<div id="content">
+<style>
+* {box-sizing: border-box}
+body {
+    font-family: Verdana, sans-serif;
+    margin:0;
+}
+
+img {
+  max-width: 100%;
+  height: 50%;
+}
+</style>
+
+<body>
+
+<div class="slideshow-container">
+
+<div class="mySlides">
+    <img src ="../static/img1.jpg" width="500" height="500">
+</div>
+
+<div class="mySlides">
+  <img src ="../static/img2.jpg" width="450" height="500">
+</div>
+
+<div class="mySlides">
+  <img src ="../static/img3.jpg" width="550" height="500">
+</div>
+
+<a class="prev" onclick="plusSlides(-1)">❮</a>
+<a class="next" onclick="plusSlides(1)">❯</a>
+
+</div>
+
+<div class="dot-container">
+  <span class="dot" onclick="currentSlide(1)"></span>
+  <span class="dot" onclick="currentSlide(2)"></span>
+  <span class="dot" onclick="currentSlide(3)"></span>
+</div>
+
+<!-- Slide show automatic movement -->
+<script>
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  slideIndex++;
+  if (slideIndex > slides.length) {slideIndex = 1}
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+  setTimeout(showSlides, 5000); // Change image every 2 seconds
+}
+</script>
+
+<style>
+* {box-sizing: border-box}
+body {
+    font-family: Verdana, sans-serif;
+    margin:0;
+}
+
+</style>
+
+<br>
+<!-- Play box -->
+<div id="play-box-profile">
+        <p>Your account details are below:</p>
+        <table>
+            <tr>
+                <td>Name:</td>
+                <td>{{ account['name'] }}</td>
+            </tr>
+            <tr>
+                <td>Username:</td>
+                <td>{{ account['username'] }}</td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td>************</td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td>{{ account['email'] }}</td>
+            </tr>
+            <tr>
+                <td>Preferred Category:</td>
+                <!--<td id="demo"></td>-->
+                <script>
+                x = {{category}};
+                function test(x){
+                    if (x == "Tutorial"){
+                         return x;
+                    } else {
+                         return "Your preferred category will be determined after you play at least 25 games.";
+                    }
+                }
+                document.getElementById("demo").innerHTML = test(x);
+                </script>
+                <!--Placeholder starts here-->
+                <td>Your preferred category will be determined after you play at least 25 games.</td>
+            </tr>
+            <tr>
+                <td>High Score:</td>
+                <td>No games played yet.</td>
+            </tr>
+        </table>
+
+</div>
+
+</body>
+</div>
+</html>
