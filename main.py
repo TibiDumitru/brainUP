@@ -60,7 +60,7 @@ def logout():
    session.pop('id', None)
    session.pop('username', None)
    # Redirect to login page
-   return redirect(url_for('login'))
+   return redirect(url_for('init'))
 
 # http://localhost:5000/register - this will be the registration page, we need to use both GET and POST requests
 @app.route('/register', methods=['GET', 'POST'])
@@ -125,5 +125,12 @@ def profile():
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
+@app.route('/home/single-player')
+def single_player():
+    return render_template('single_player.html')
+
+@app.route('/home/multi-player')
+def multi_player():
+    return render_template('multi_player.html')
 
 
