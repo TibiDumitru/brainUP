@@ -5,7 +5,7 @@
   	-webkit-font-smoothing: antialiased;
   	-moz-osx-font-smoothing: grayscale;
 }
-.body-log-reg {
+body {
   	background-color: #1A253F;
   	margin: 0;
 }
@@ -85,8 +85,6 @@
   	color: #1A253F;
   	transition: background-color 0.2s;
 }
-
-/*TODO*/
 .navtop {
   	background-color: #2f3947;
   	height: 60px;
