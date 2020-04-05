@@ -172,3 +172,12 @@ body {
   right: 0;
 }
 
+#play-box-profile {
+  width: auto;
+  height: 40vh;
+  padding: 15px 15px 15px 35px;
+  border: 15px;
+  border-style: solid;
+  border-color: #1A253F;
+  box-sizing: border-box;
+}

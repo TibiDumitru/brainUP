@@ -53,7 +53,7 @@ a:hover
 .container
 {
     overflow: hidden;
-    margin: 0 auto;
+    margin: 0em auto;
     width: 1200px;
 }
 
@@ -256,8 +256,9 @@ ul.actions li
     border: 2px solid rgba(255,255,255,1);
     border-radius: 6px;
     color: rgba(255,255,255,1);
-    font-size: 1.0em;
+    font-size: 0.9em;
 }
+
 
 #menu .icon
 {
