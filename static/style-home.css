@@ -122,3 +122,13 @@ body {
 
 /* Add an italic font style to all quotes */
 q {font-style: italic;}
+
+#play-box {
+  width: auto;
+  height: 40vh;
+  padding: 12%;
+  border: 15px;
+  border-style: solid;
+  border-color: #1A253F;
+  box-sizing: border-box;
+}

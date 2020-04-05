@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-		<meta charset="utf-8">
-		<title>Home</title>
-		<link rel="stylesheet" href="{{ url_for('static', filename='style-home.css') }}">
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <meta charset="utf-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style-home.css') }}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 </head>
-
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a>
     <a href="{{ url_for('profile') }}"><i class="fas fa-user-circle"></i> My profile</a>
     <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
 </div>
-
 <div id="main">
   <span style="font-size:30px;color:#1A253F;cursor:pointer" onclick="openNav()">&#9776 Menu</span>
 </div>
-
+<!-- Side bar functions -->
 <script>
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
@@ -31,8 +29,7 @@ function closeNav() {
     document.body.style.backgroundColor = "white";
 }
 </script>
-<div id="header">
-</div>
+
 <div id="content">
 <style>
 * {box-sizing: border-box}
@@ -40,9 +37,8 @@ body {
     font-family: Verdana, sans-serif;
     margin:0;
 }
-
 </style>
-</head>
+
 <body>
 
 <div class="slideshow-container">
@@ -70,6 +66,7 @@ body {
   <span class="dot" onclick="currentSlide(3)"></span>
 </div>
 
+<!-- Slide show automatic movement -->
 <script>
 var slideIndex = 1;
 showSlides(slideIndex);
@@ -100,7 +97,22 @@ function showSlides(n) {
 }
 </script>
 
-</body>
+<style>
+* {box-sizing: border-box}
+body {
+    font-family: Verdana, sans-serif;
+    margin:0;
+}
+
+</style>
+
+<br>
+<!-- Play box -->
+<div id="play-box">Aici o sa vina butoanele de play.
+    Sper ca am facut chenarul asta dependent de dimensiunile ecranului ca sa se vada ok la toti.
+
 </div>
 
+</body>
+</div>
 </html>
