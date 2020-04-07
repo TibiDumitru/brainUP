@@ -124,6 +124,7 @@ ul.actions li
 
 .button
 {
+    background-color: #1a253f;
     display: inline-block;
     padding: 1em 2em 1em 2em;
     letter-spacing: 0.10em;
@@ -144,6 +145,12 @@ ul.actions li
     color: rgba(0,0,0,.8);
 }
 
+.button hover
+{
+    background-color : white;
+    color: #1a253f;
+}
+
 
 
 /*********************************************************************************/
@@ -161,11 +168,11 @@ ul.actions li
 }
 
 .title .byline
-{
-    font-size: 1.3em;
-    color: rgba(255,255,255,0.60);
-}
-
+	{
+		font-size: 1.3em;
+		color: white;
+		font-weight: bold;
+	}
 /*********************************************************************************/
 /* Header                                                                        */
 /*********************************************************************************/
@@ -257,6 +264,7 @@ ul.actions li
     border-radius: 6px;
     color: rgba(255,255,255,1);
     font-size: 0.9em;
+    background-color: #1a253f;
 }
 
 
