@@ -12,6 +12,11 @@ body
     font-size: 12pt;
     font-weight: 200;
     color: #FFF;
+<<<<<<< HEAD
+=======
+    background: #1a253f url(draft2.png) no-repeat center;
+    background-size: cover;
+>>>>>>> f2e969176abd7c6c33560c1a8ef508d4fe8f1958
 }
 
 h1, h2, h3
@@ -145,7 +150,11 @@ ul.actions li
     color: rgba(0,0,0,.8);
 }
 
+<<<<<<< HEAD
 .button hover
+=======
+.button:hover
+>>>>>>> f2e969176abd7c6c33560c1a8ef508d4fe8f1958
 {
     background-color : white;
     color: #1a253f;
@@ -191,9 +200,14 @@ ul.actions li
 #header-wrapper
 {
     position: relative;
+<<<<<<< HEAD
     padding: 0em 0em 0em 0em;
     background: #1a253f url(draft2.jpg) no-repeat center;
     background-size: cover;
+=======
+    padding: 0em;
+    margin: 0em;
+>>>>>>> f2e969176abd7c6c33560c1a8ef508d4fe8f1958
 }
 
 #header
@@ -255,16 +269,28 @@ ul.actions li
     text-decoration: none;
     text-transform: uppercase;
     font-size: 0.87em;
+<<<<<<< HEAD
+=======
+    font-weight:bold;
+>>>>>>> f2e969176abd7c6c33560c1a8ef508d4fe8f1958
     color: rgba(255,255,255,0.80);
 }
 
 #menu li:hover a, #menu li.active a, #menu li.active span
 {
+<<<<<<< HEAD
     border: 2px solid rgba(255,255,255,1);
     border-radius: 6px;
     color: rgba(255,255,255,1);
     font-size: 0.9em;
     background-color: #1a253f;
+=======
+    background-color: white;
+    color: #1a253f;
+    border: 2px solid rgba(255,255,255,1);
+    border-radius: 6px;
+    font-size: 0.9em;
+>>>>>>> f2e969176abd7c6c33560c1a8ef508d4fe8f1958
 }
 
 
