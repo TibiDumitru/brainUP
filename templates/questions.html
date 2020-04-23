@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Questions</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+	</head>
+	<div id="mySidenav" class="sidenav" style="
+		position: fixed;
+		top: 0;
+		padding-top: 10px;">
+		<a href="{{ url_for('home') }}" style="
+		padding: 8px 8px 8px 32px;
+		text-decoration: none;
+		font-size: 25px;
+		color: #818181;
+		display: block;
+    	transition: 0.3s"><i class="fas fa-home"></i> Home</a>
+	</div>
+	<body class="body-log-reg">
+		<div class="register">
+			<h1 style="background-image: none; height: 50px;">Add a question </h1>
+			<form action="{{ url_for('questions') }}" method="post" autocomplete="off">
+				<label for="category">
+					<i class="fas fa-scroll"></i>
+				</label>
+				<select name="category" id="category" method="GET" action="/" style="
+					resize: none;
+					width: 310px;
+					height: 50px;
+					border: 1px solid #EDD7C2;
+					margin-bottom: 20px;
+					padding: 0 15px;
+					background-color: #EDD7C2;">
+				  <option value="Choose a category!" selected>Choose a category!</option>
+				  {% for category in categories %}
+					<option value="{{category}}">{{category}}</option>
+				  {% endfor %}
+				</select>
+				<label for="text">
+					<i class="fas fa-question-circle"></i>
+				</label>
+				<textarea rows = "4" cols = "40" name="text" placeholder="Complete with the question..." id="text" required style="
+					resize: none;
+					width: 310px;
+					height: 50px;
+					border: 1px solid #EDD7C2;
+					margin-bottom: 20px;
+					padding: 0 15px;
+					background-color: #EDD7C2;"></textarea>
+				<label for="opt1">
+					<i class="fas fa-times"></i>
+				</label>
+				<input type="text" name="opt1" placeholder="Answer1" id="opt1" required>
+				<label for="opt2">
+					<i class="fas fa-times"></i>
+				</label>
+				<input type="text" name="opt2" placeholder="Answer2" id="opt2" required>
+				<label for="opt3">
+					<i class="fas fa-times"></i>
+				</label>
+				<input type="text" name="opt3" placeholder="Answer3" id="opt3" required>
+				<label for="correct">
+					<i class="fas fa-check"></i>
+				</label>
+				<input type="text" name="correct" placeholder="Correct Answer" id="correct" required>
+				<div class="msg">{{ msg }}</div>
+				<input type="submit" value="Add question!">
+			</form>
+		</div>
+	</body>
+</html>

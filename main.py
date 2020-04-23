@@ -1,24 +1,37 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
+from datetime import datetime
 import re
 
 app = Flask(__name__)
 
 app.secret_key = 'vinti_fara_restante'
 
+<<<<<<< HEAD
 # Enter your database connection details below
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'root1234'
+=======
+# database connection details
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'parola10'
+>>>>>>> 66df92d3674feb852525ef03ea88e9596991fa33
 app.config['MYSQL_DB'] = 'pythonlogin'
 
 # Intialize MySQL
 mysql = MySQL(app)
 
+categories = ['Arts', 'Animals', 'Games', 'Geography', 'Movies', 'Music', 'Science', 'Programming', 'Sport', 'Literature']
+
+
+# http://localhost:5000 - this is the index page
 @app.route('/')
 def init():
     return render_template('index.html')
+
 
 # http://localhost:5000/login/ - this will be the login page, we need to use both GET and POST requests
 @app.route('/login/', methods=['GET', 'POST'])
@@ -52,15 +65,17 @@ def login():
     # Show the login form with message (if any)
     return render_template('login.html', msg=msg)
 
+
 # http://localhost:5000/logout - this will be the logout page
 @app.route('/logout')
 def logout():
     # Remove session data, this will log the user out
-   session.pop('loggedin', None)
-   session.pop('id', None)
-   session.pop('username', None)
-   # Redirect to login page
-   return redirect(url_for('init'))
+    session.pop('loggedin', None)
+    session.pop('id', None)
+    session.pop('username', None)
+    # Redirect to login page
+    return redirect(url_for('init'))
+
 
 # http://localhost:5000/register - this will be the registration page, we need to use both GET and POST requests
 @app.route('/register', methods=['GET', 'POST'])
@@ -68,31 +83,39 @@ def register():
     # Output message if something goes wrong...
     msg = ''
     # Check if "username", "password" and "email" POST requests exist (user submitted form)
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form and 'name' in request.form:
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and\
+            'email' in request.form and 'name' in request.form:
         # Create variables for easy access
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
         name = request.form['name']
+        registered_on = datetime.now()
         # Check if account exists using MySQL
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM accounts WHERE username = %s or email = %s', (username, email,))
-        account = cursor.fetchone()
+        cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
+        username_in_use = cursor.fetchone()
+        cursor.execute('SELECT * FROM accounts WHERE email = %s', (email,))
+        email_in_use = cursor.fetchone()
         # If account exists show error and validation checks
-        if account:
-            msg = 'Account already exists!'
+        if username_in_use and email_in_use:
+            msg = 'Username and email are already in use!'
+        elif username_in_use:
+            msg = 'Username is already in use!'
+        elif email_in_use:
+            msg = 'Email is already in use!'
         elif not re.match(r'[A-Z][A-Za-z' ']+', name):
             msg = 'Invalid name!'
-        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+        elif not re.match(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$', email):
             msg = 'Invalid email address!'
         elif not re.match(r'[A-Za-z0-9]+', username):
             msg = 'Username must contain only characters and numbers!'
         elif not username or not password or not email or not name:
             msg = 'Please fill out the form!'
         else:
-            # Account doesnt exists and the form data is valid, now insert new account into accounts table
-            # (id, username, password, email, name, category)
-            cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s)', (username, password, name, "Tutorial", email,))
+            # Account doesn't exist and the form data is valid, now insert new account into accounts table
+            cursor.execute('INSERT INTO accounts(username, password, name, email, registered_on) VALUES\
+                           (%s, %s, %s, %s, %s)', (username, password, name, email, registered_on))
             mysql.connection.commit()
             msg = 'You have successfully registered!'
     elif request.method == 'POST':
@@ -100,6 +123,7 @@ def register():
         msg = 'Please fill out the form!'
     # Show registration form with message (if any)
     return render_template('register.html', msg=msg)
+
 
 # http://localhost:5000/home - this will be the home page, only accessible for loggedin users
 @app.route('/home')
@@ -110,6 +134,7 @@ def home():
         return render_template('home.html', username=session['username'])
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
+
 
 # http://localhost:5000/profile - this will be the profile page, only accessible for loggedin users
 @app.route('/profile')
@@ -125,9 +150,43 @@ def profile():
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
+
+@app.route('/questions', methods=['GET', 'POST'])
+def questions():
+    msg = ''
+    if request.method == 'POST' and 'text' in request.form and 'opt1' in request.form \
+            and 'opt2' in request.form and 'opt3' in request.form and 'correct' in request.form:
+        category = request.form['category']
+
+        text = request.form['text']
+        opt1 = request.form['opt1']
+        opt2 = request.form['opt2']
+        opt3 = request.form['opt3']
+        correct = request.form['correct']
+
+        # Check if question already exists
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        if not category or not text or not correct or not opt1 or not opt2 or not opt3:
+            msg = 'Please fill out the form!'
+        elif category not in categories:
+            msg = 'Invalid category!'
+        else:
+            # insert new question into questions table
+            cursor.execute('INSERT INTO questions(category, text, opt1, opt2, opt3, correct) VALUES \
+                               (%s, %s, %s, %s, %s, %s)', (category, text, opt1, opt2, opt3, correct))
+            mysql.connection.commit()
+            msg = 'Question added to database!'
+    elif request.method == 'POST':
+        # Form is empty... (no POST data)
+        msg = 'Please fill out the form!'
+    # Show registration form with message (if any)
+    return render_template('questions.html', msg=msg, categories=categories)
+
+
 @app.route('/home/single-player')
 def single_player():
     return render_template('single_player.html')
+
 
 @app.route('/home/multi-player')
 def multi_player():
@@ -139,3 +198,6 @@ def contact_us():
 
 
 
+@app.route('/contact-us')
+def contact_us():
+    return render_template('contact_us.html')
