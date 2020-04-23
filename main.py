@@ -8,10 +8,10 @@ app = Flask(__name__)
 app.secret_key = 'vinti_fara_restante'
 
 # Enter your database connection details below
-app.config['MYSQL_HOST'] = 'brainUP.mysql.pythonanywhere-services.com'
-app.config['MYSQL_USER'] = 'brainUP'
-app.config['MYSQL_PASSWORD'] = 'paroladatabase'
-app.config['MYSQL_DB'] = 'brainUP$database'
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'root1234'
+app.config['MYSQL_DB'] = 'pythonlogin'
 
 # Intialize MySQL
 mysql = MySQL(app)
