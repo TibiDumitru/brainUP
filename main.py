@@ -8,10 +8,10 @@ app = Flask(__name__)
 app.secret_key = 'vinti_fara_restante'
 
 # Enter your database connection details below
-app.config['MYSQL_HOST'] = 'sql7.freemysqlhosting.net'
-app.config['MYSQL_USER'] = 'sql7330808'
-app.config['MYSQL_PASSWORD'] = 'i8AwCUhJaT'
-app.config['MYSQL_DB'] = 'sql7330808'
+app.config['MYSQL_HOST'] = 'brainUP.mysql.pythonanywhere-services.com'
+app.config['MYSQL_USER'] = 'brainUP'
+app.config['MYSQL_PASSWORD'] = 'paroladatabase'
+app.config['MYSQL_DB'] = 'brainUP$database'
 
 # Intialize MySQL
 mysql = MySQL(app)
@@ -132,5 +132,10 @@ def single_player():
 @app.route('/home/multi-player')
 def multi_player():
     return render_template('multi_player.html')
+
+@app.route('/contact-us')
+def contact_us():
+    return render_template('contact_us.html')
+
 
 
