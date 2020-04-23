@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<head>
+	<title>Contact Us</title>
+	<meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style-contact.css') }}">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+</head>
+<body>
+		<a id="home-contact" href="{{ url_for('logout') }}"><i class="fas fa-home"></i> Home</a>
+		<div class="bg-contact">
+		<div class="container-contact">
+			<div class="wrap-contact">
+					<span class="contact-form-title">
+						Contact Us
+					</span>
+
+					<button class="button-contact" onclick="hiForm()">Share your opinion</button>
+				    <button class="button-contact" onclick="qForm()">Suggest question</button>
+
+						<div class="form-popup" id="myForm">
+						  <form action="/action_page.php" class="form-container">
+							  <input class="input" placeholder="Your name" name="name" required>
+							  <input class="input" placeholder="Your email" name="email" required>
+							  <textarea id="msg" class="input" placeholder="Your Message" name="message" required></textarea>
+
+							  <div class="form-popup" id="qForm">
+								  <select id="show-on-q" class="custom-select" required name="category">
+									<option disabled selected>Choose category:</option>
+									<option>Animals</option>
+									<option>Sport</option>
+									<option>Programming</option>
+								  </select>
+
+								   <textarea id="show-on-q1" class="input" placeholder="Your question" name="question" required
+								   style="height:20px;"></textarea>
+								   <input id="show-on-q2" class="input" placeholder="Answer option 1" name="answer" required>
+								   <input id="show-on-q3" class="input" placeholder="Answer option 2" name="answer" required>
+								   <input id="show-on-q4" class="input" placeholder="Answer option 3" name="answer" required>
+								   <input id="show-on-q5" class="input" placeholder="Answer option 4" name="answer" required>
+
+								  	<select id="show-on-q6" class="custom-select" required name="correct">
+										<option disabled selected>Correct answer:</option>
+										<option>Option 1</option>
+										<option>Option 2</option>
+										<option>Option 3</option>
+										<option>Option 4</option>
+								  </select>
+							  </div>
+
+							<button type="submit" class="btn">Submit</button>
+							<button type="button" class="btn" onclick="closeForm()">Close</button>
+			  				</form>
+						</div>
+
+
+						<script>
+						function hiForm() {
+						  document.getElementById("myForm").style.display = "block";
+						  document.getElementById("msg").style.display = "block";
+						  document.getElementById("show-on-q").style.display = "none";
+						  document.getElementById("show-on-q1").style.display = "none";
+						  document.getElementById("show-on-q2").style.display = "none";
+						  document.getElementById("show-on-q3").style.display = "none";
+						  document.getElementById("show-on-q4").style.display = "none";
+						  document.getElementById("show-on-q5").style.display = "none";
+						  document.getElementById("show-on-q6").style.display = "none";
+						}
+						function qForm() {
+						  document.getElementById("myForm").style.display = "block";
+						  document.getElementById("qForm").style.display = "block";
+						  document.getElementById("show-on-q").style.display = "block";
+						  document.getElementById("show-on-q1").style.display = "block";
+						  document.getElementById("show-on-q2").style.display = "block";
+						  document.getElementById("show-on-q3").style.display = "block";
+						  document.getElementById("show-on-q4").style.display = "block";
+						  document.getElementById("show-on-q5").style.display = "block";
+						  document.getElementById("show-on-q6").style.display = "block";
+						  document.getElementById("msg").style.display = "none";
+
+						}
+						function closeForm() {
+						  document.getElementById("myForm").style.display = "none";
+						}
+
+						</script>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
