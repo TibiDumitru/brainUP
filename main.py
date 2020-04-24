@@ -8,17 +8,10 @@ app = Flask(__name__)
 
 app.secret_key = 'vinti_fara_restante'
 
-<<<<<<< HEAD
-# Enter your database connection details below
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root1234'
-=======
 # database connection details
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'parola10'
->>>>>>> 66df92d3674feb852525ef03ea88e9596991fa33
+app.config['MYSQL_PASSWORD'] = 'root1234'
 app.config['MYSQL_DB'] = 'pythonlogin'
 
 # Intialize MySQL
@@ -185,17 +178,15 @@ def questions():
 
 @app.route('/home/single-player')
 def single_player():
-    return render_template('single_player.html')
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM questions WHERE category = %s', (categories[2],))
+    q = cursor.fetchall()
+    return render_template('single_player.html', questions=q)
 
 
 @app.route('/home/multi-player')
 def multi_player():
     return render_template('multi_player.html')
-
-@app.route('/contact-us')
-def contact_us():
-    return render_template('contact_us.html')
-
 
 
 @app.route('/contact-us')
