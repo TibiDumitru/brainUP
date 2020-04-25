@@ -67,7 +67,7 @@ body, html {
   line-height: 1.2;
   text-align: center;
   text-transform: uppercase;
-  padding-bottom: 30px;
+  padding-bottom: 0;
 }
 
 
@@ -119,14 +119,13 @@ button{
 	color: #fff;
 	border: 0px;
 	border-radius: 3px;
-	padding: 20px;
+	padding-top: 20px;
 	cursor: pointer;
 }
 
 button:hover{
 	background-color: #38a;
 }
-
 
 .slide{
   position: absolute;

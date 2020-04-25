@@ -3,7 +3,8 @@
    <title>Single player mode</title>
    <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ url_for('static', filename='style-single.css') }}">
-   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
 <body>
       <a id="home-single" href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a>
@@ -18,9 +19,9 @@
 			  	<div id="quiz"></div>
 			  </div>
 			 <button style="display:none" id="previous">Previous Question</button>
-			 <button class="button" onclick="incrementQuestion()" id="next">Next Question</button>
+			 <button style="position: absolute; bottom: 100px" class="button" onclick="incrementQuestion()" id="next">Next Question</button>
 			 <p style="height:28px"></p>
-			 <button style="float:right; height: 40px; padding: 0" class="button" id="myBtn">Submit Quiz</button>
+			 <button style="position: absolute; bottom: 100px; float:right; height: 40px; padding: 0" class="button" id="myBtn">Submit Quiz</button>
 
 			 <div id="myModal" class="modal">
 
@@ -65,16 +66,22 @@
 			// variable to store the list of possible answers
 			const answers = [];
 			// and for each available answer...
-			for(letter in currentQuestion.answers){
-			  // ...add an HTML radio button
-			  answers.push(
-				`<label>
-				  <input type="radio" name="question${questionNumber}" value="${letter}">
-				  ${letter} :
-				  ${currentQuestion.answers[letter]}
-				</label>`
+			 answers.push(
+			`<div class="container-fluid">
+  				<div class="row">
+    				<div class="btn-group">
+				 		<input class="button" type="button" value="${currentQuestion.answers["a"]}" name="question${questionNumber}" onclick="functionSelect()">
+				  		<input class="button" type="button" value="${currentQuestion.answers["b"]}" name="question${questionNumber}" onclick="functionSelect()">
+				  	</div>
+  				</div>
+  				<div class="row">
+    				<div class=" btn-group">
+				    	<input class="button" type="button" value="${currentQuestion.answers["c"]}" name="question${questionNumber}" onclick="functionSelect()">
+				    	<input class="button" type="button" value="${currentQuestion.answers["d"]}" name="question${questionNumber}" onclick="functionSelect()">
+				 	</div>
+  				</div>
+  			</div>`
 			  );
-			}
 			// add this question and its answers to the output
 			output.push(
 			  `<div class="slide">
@@ -97,12 +104,12 @@
 		  // find selected answer
 		  const answerContainer = answerContainers[questionNumber];
 		  const selector = `input[name=question${questionNumber}]:checked`;
-		  const userAnswer = (answerContainer.querySelector(selector)).value;
+		  const userAnswer = (answerContainer.querySelector(selector) || {}).value;
 		  // if answer is correct
 		  if(userAnswer === currentQuestion.correctAnswer){
 			// add to the number of correct answers
 			numCorrect++;
-			// color the answers green
+				// color the answers green
 		  }
 		});
 		// show number of correct answers out of total
@@ -127,40 +134,64 @@
 		showSlide(currentSlide + 1);
 	  }
 
+	  function shuffle(sourceArray) {
+	  for (var i = 0; i < sourceArray.length - 1; i++) {
+		var j = i + Math.floor(Math.random() * (sourceArray.length - i));
+
+		var temp = sourceArray[j];
+		sourceArray[j] = sourceArray[i];
+		sourceArray[i] = temp;
+	  }
+	  return sourceArray;
+	  }
+
 	  // Variables
 	  const quizContainer = document.getElementById('quiz');
 	  const resultsContainer = document.getElementById('results');
 	  const submitButton = document.getElementById('myBtn');
-	  const myQuestions = [
+
+	  var questionsAux = JSON.stringify({{questions_list | tojson | safe}});
+      var questionsData = JSON.parse(questionsAux);
+	  var myQuestions = [];
+	  var i;
+
+	  for (i = 0; i < questionsData.length; i++) {
+	  	var question = questionsData[i];
+
+	  	ans = [];
+	  	ans.push(question.opt1);
+	  	ans.push(question.opt2);
+	  	ans.push(question.opt3);
+	  	ans.push("!" + question.correct);
+	  	ans = shuffle(ans);
+	  	var ans_correct;
+	  	if (ans[0][0] == '!') {
+	  		ans_correct = "a";
+			ans[0] = ans[0].substring(1);
+	  	} else if (ans[1][0] == '!') {
+	  		ans_correct = "b";
+			ans[1] = ans[1].substring(1);
+	  	} else if (ans[2][0] == '!') {
+	  		ans_correct = "c";
+			ans[2] = ans[2].substring(1);
+	  	} else if (ans[3][0] == '!') {
+	  		ans_correct = "d";
+	  		ans[3] = ans[3].substring(1);
+	  	}
+
+	  	myQuestions.push(
 		{
-		  question: "Who invented JavaScript?",
+		  question: question.text,
 		  answers: {
-			a: "Douglas Crockford",
-			b: "Sheryl Sandberg",
-			c: "Brendan Eich"
+			a: ans[0],
+			b: ans[1],
+			c: ans[2],
+			d: ans[3]
 		  },
-		  correctAnswer: "c"
-		},
-		{
-		  question: "Which one of these is a JavaScript package manager?",
-		  answers: {
-			a: "Node.js",
-			b: "TypeScript",
-			c: "npm"
-		  },
-		  correctAnswer: "c"
-		},
-		{
-		  question: "Which tool can you use to ensure code quality?",
-		  answers: {
-			a: "Angular",
-			b: "jQuery",
-			c: "RequireJS",
-			d: "ESLint"
-		  },
-		  correctAnswer: "d"
-		}
-	  ];
+		  correctAnswer: ans_correct
+		});
+	  }
+
 	  // Kick things off
 	  buildQuiz();
 	  // Pagination
