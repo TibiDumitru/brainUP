@@ -11,7 +11,7 @@ app.secret_key = 'vinti_fara_restante'
 # database connection details
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'parola10'
+app.config['MYSQL_PASSWORD'] = 'parolanesigura2'
 app.config['MYSQL_DB'] = 'pythonlogin'
 
 # Intialize MySQL

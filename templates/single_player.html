@@ -10,7 +10,7 @@
       <a id="home-single" href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a>
       <div class="bg-contact">
       <div class="container-contact">
-         <div class="wrap-contact"  style="float:left">
+         <div class="wrap-contact left"  style="float:left">
               <span class="contact-form-title">
 					Question number
 					 <input class="contact-form-title q-number" type="text" id="q-number" value="1"/>
@@ -19,15 +19,15 @@
 			  	<div id="quiz"></div>
 			  </div>
 			 <button style="display:none" id="previous">Previous Question</button>
-			 <button style="position: absolute; bottom: 100px" class="button" onclick="incrementQuestion()" id="next">Next Question</button>
+			 <button style="position: absolute; bottom: 100px; padding: 0" class="button" onclick="incrementQuestion()" id="next">Next Question</button>
 			 <p style="height:28px"></p>
 			 <button style="position: absolute; bottom: 100px; float:right; height: 40px; padding: 0" class="button" id="myBtn">Submit Quiz</button>
 
 			 <div id="myModal" class="modal">
 
 				  <!-- Modal content -->
-				  <div class="modal-content">
-					<span class="close">&times;</span>
+				  <div class="modal-content" style="background-color:#EDD7C2; color:#1A253F;" >
+					<span style="color:#1A253F" class="close">&times;</span>
 					<p>Your result is <div id="results"></div></p>
 				  </div>
 
@@ -35,16 +35,14 @@
 
          </div>
 
-         <div class="wrap-contact" style="float:right">
+         <div class="wrap-contact right" style="float:right">
+             <img src="{{url_for('static', filename= selected_category + '.png')}}" width="450" height="450" class="image-category"/>
+             <p class="text-category"> {{selected_category|safe}}</p>
          </div>
       </div>
    </div>
 </body>
 </html>
-
-<script>
-
-</script>
 
 <script>
 
@@ -169,6 +167,7 @@
 	  const resultsContainer = document.getElementById('results');
 	  const submitButton = document.getElementById('myBtn');
 
+	  var selected_category = JSON.stringify({{questions_list | tojson | safe}});
 	  var questionsAux = JSON.stringify({{questions_list | tojson | safe}});
       var questionsData = JSON.parse(questionsAux);
 	  var myQuestions = [];
@@ -176,6 +175,7 @@
 
 	  for (i = 0; i < questionsData.length; i++) {
 	  	var question = questionsData[i];
+	  	//console.log(question.category)
 
 	  	ans = [];
 	  	ans.push(question.opt1);
