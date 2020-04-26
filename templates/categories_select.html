@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,800%7CWork+Sans:200,300%7CJosefin+Sans:100" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style-categories.css') }}" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="btn-group btn-group-justified">
+                <button class="button" type="button" onclick="window.location.href='{{ url_for('single_player', selected_category='Arts') }}';">Arts</button>
+                <button class="button" type="button" onclick="window.location.href='{{ url_for('single_player', selected_category='Animals') }}';">Animals</button>
+                <button class="button" type="button" onclick="window.location.href='{{ url_for('single_player', selected_category='Games') }}';">Games</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class=" btn-group btn-group-justified">
+                <button class="button" type="button" onclick="window.location.href='{{ url_for('single_player', selected_category='Geography') }}';">Geography</button>
+                <button class="button" type="button" onclick="window.location.href='{{ url_for('single_player', selected_category='Movies') }}';">Movies</button>
+                <button class="button" type="button" onclick="window.location.href='{{ url_for('single_player', selected_category='Music') }}';">Music</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class=" btn-group btn-group-justified">
+                <button class="button" type="button" onclick="window.location.href='{{ url_for('single_player', selected_category='Science') }}';">Science</button>
+                <button class="button" type="button" onclick="window.location.href='{{ url_for('single_player', selected_category='Programming') }}';">Programming</button>
+                <button class="button" type="button" onclick="window.location.href='{{ url_for('single_player', selected_category='Sport') }}';">Sport</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class=" btn-group btn-group-justified">
+                <button class="button" type="button" onclick="window.location.href='{{ url_for('single_player', selected_category='Literature') }}';">Literature</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

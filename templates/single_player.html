@@ -47,6 +47,7 @@
 </script>
 
 <script>
+<<<<<<< HEAD
 var finalAnswer = null;
  function incrementQuestion()
 	{
@@ -63,6 +64,26 @@ var finalAnswer = null;
 	function getUserAnswer() {
 		return finalAnswer;
 	}
+=======
+
+ var selected = null;
+ var givenAnswers = [];
+ var pag = 0;
+
+ function incrementQuestion()
+ {
+ 		if (selected != null) {
+			var value = parseInt(document.getElementById("q-number").value, 10);
+			value = isNaN(value) ? 1 : value;
+			value++;
+			document.getElementById("q-number").value = value;
+		}
+ }
+
+ function functionSelect(btn) {
+	  	selected = document.getElementsByClassName("button choice")[4 * pag + btn];
+ }
+>>>>>>> 7429794dd858995444292ce30438b6e796cfc7f9
 
 	(function(){
 	  // Functions
@@ -79,14 +100,24 @@ var finalAnswer = null;
 			`<div class="container-fluid">
   				<div class="row">
     				<div class="btn-group">
+<<<<<<< HEAD
 				 		<input class="button choice" type="button" value="${currentQuestion.answers["a"]}" name="question${questionNumber}" onclick="functionSelect()">
 				  		<input class="button choice" type="button" value="${currentQuestion.answers["b"]}" name="question${questionNumber}" onclick="functionSelect()">
+=======
+				 		<input class="button choice" type="button" value="${currentQuestion.answers["a"]}" name="question${questionNumber}" onclick="functionSelect(0)">
+				  		<input class="button choice" type="button" value="${currentQuestion.answers["b"]}" name="question${questionNumber}" onclick="functionSelect(1)">
+>>>>>>> 7429794dd858995444292ce30438b6e796cfc7f9
 				  	</div>
   				</div>
   				<div class="row">
     				<div class=" btn-group">
+<<<<<<< HEAD
 				    	<input class="button choice" type="button" value="${currentQuestion.answers["c"]}" name="question${questionNumber}" onclick="functionSelect()">
 				    	<input class="button choice" type="button" value="${currentQuestion.answers["d"]}" name="question${questionNumber}" onclick="functionSelect()">
+=======
+				    	<input class="button choice" type="button" value="${currentQuestion.answers["c"]}" name="question${questionNumber}" onclick="functionSelect(2)">
+				    	<input class="button choice" type="button" value="${currentQuestion.answers["d"]}" name="question${questionNumber}" onclick="functionSelect(3)">
+>>>>>>> 7429794dd858995444292ce30438b6e796cfc7f9
 				 	</div>
   				</div>
   			</div>`
@@ -103,6 +134,7 @@ var finalAnswer = null;
 		// finally combine our output list into one string of HTML and put it on the page
 		quizContainer.innerHTML = output.join('');
 	  }
+<<<<<<< HEAD
 	  function showResults(){
 		// gather answer containers from our quiz
 		const answerContainers = quizContainer.querySelectorAll('.answers');
@@ -123,6 +155,31 @@ var finalAnswer = null;
 		});
 		// show number of correct answers out of total
 		resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
+=======
+
+	  function showResults(){
+	    if (selected != null) {
+	    	givenAnswers.push(selected.value);
+			// gather answer containers from our quiz
+			const answerContainers = quizContainer.querySelectorAll('.answers');
+			// keep track of user's answers
+			let numCorrect = 0;
+			// for each question...
+			myQuestions.forEach( (currentQuestion, questionNumber) => {
+			  // find selected answer
+			  const answerContainer = answerContainers[questionNumber];
+			  const userAnswer = givenAnswers[questionNumber];
+			  // if answer is correct
+			  if(userAnswer === currentQuestion.correctAnswer){
+				// add to the number of correct answers
+				numCorrect++;
+					// color the answers green
+			  }
+			});
+			// show number of correct answers out of total
+			resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
+		}
+>>>>>>> 7429794dd858995444292ce30438b6e796cfc7f9
 	  }
 
 	  function showSlide(n) {
@@ -140,7 +197,16 @@ var finalAnswer = null;
 		}
 	  }
 	  function showNextSlide() {
+<<<<<<< HEAD
 		showSlide(currentSlide + 1);
+=======
+	    if (selected != null) {
+	    	givenAnswers.push(selected.value);
+			showSlide(currentSlide + 1);
+			selected = null;
+			pag = pag + 1;
+		}
+>>>>>>> 7429794dd858995444292ce30438b6e796cfc7f9
 	  }
 
 	  function shuffle(sourceArray) {
@@ -175,6 +241,7 @@ var finalAnswer = null;
 	  	ans = shuffle(ans);
 	  	var ans_correct;
 	  	if (ans[0][0] == '!') {
+<<<<<<< HEAD
 	  		ans_correct = "a";
 			ans[0] = ans[0].substring(1);
 	  	} else if (ans[1][0] == '!') {
@@ -186,6 +253,19 @@ var finalAnswer = null;
 	  	} else if (ans[3][0] == '!') {
 	  		ans_correct = "d";
 	  		ans[3] = ans[3].substring(1);
+=======
+			ans[0] = ans[0].substring(1);
+			ans_correct = ans[0];
+	  	} else if (ans[1][0] == '!') {
+			ans[1] = ans[1].substring(1);
+			ans_correct = ans[1];
+	  	} else if (ans[2][0] == '!') {
+			ans[2] = ans[2].substring(1);
+			ans_correct = ans[2];
+	  	} else if (ans[3][0] == '!') {
+	  		ans[3] = ans[3].substring(1);
+	  		ans_correct = ans[3];
+>>>>>>> 7429794dd858995444292ce30438b6e796cfc7f9
 	  	}
 
 	  	myQuestions.push(
@@ -213,9 +293,13 @@ var finalAnswer = null;
 	  submitButton.addEventListener('click', showResults);
 	  nextButton.addEventListener("click", showNextSlide);
 	})();
+<<<<<<< HEAD
 </script>
 
 <script>
+=======
+
+>>>>>>> 7429794dd858995444292ce30438b6e796cfc7f9
 	// SCRIPT FOR MODAL
 	// Get the modal
 	var modal = document.getElementById("myModal");
@@ -228,7 +312,12 @@ var finalAnswer = null;
 
 	// When the user clicks the button, open the modal
 	btn.onclick = function() {
+<<<<<<< HEAD
 	  modal.style.display = "block";
+=======
+	  if (selected != null)
+	  	modal.style.display = "block";
+>>>>>>> 7429794dd858995444292ce30438b6e796cfc7f9
 	}
 
 	// When the user clicks on <span> (x), close the modal
