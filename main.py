@@ -177,8 +177,18 @@ def questions():
 
 
 @app.route('/home/single-player')
-def single_player():
-    return render_template('single_player.html')
+@app.route('/home/single-player/<selected_category>', methods=['GET'])
+def single_player(selected_category):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM questions WHERE category=%s ORDER BY RAND() LIMIT 10', (selected_category,))
+    questions_list = cursor.fetchall()
+
+    return render_template('single_player.html', questions_list=questions_list)
+
+
+@app.route('/home/single-player/categories', methods=['GET', 'POST'])
+def categories_select():
+    return render_template('categories_select.html')
 
 
 @app.route('/home/multi-player')
