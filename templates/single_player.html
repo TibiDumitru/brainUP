@@ -47,12 +47,21 @@
 </script>
 
 <script>
+var finalAnswer = null;
  function incrementQuestion()
 	{
 		var value = parseInt(document.getElementById("q-number").value, 10);
 		value = isNaN(value) ? 1 : value;
 		value++;
 		document.getElementById("q-number").value = value;
+	}
+
+	function functionSelect(btn) {
+		finalAnswer = document.getElementsByClassName("choice")[btn];
+	}
+
+	function getUserAnswer() {
+		return finalAnswer;
 	}
 
 	(function(){
@@ -70,14 +79,14 @@
 			`<div class="container-fluid">
   				<div class="row">
     				<div class="btn-group">
-				 		<input class="button" type="button" value="${currentQuestion.answers["a"]}" name="question${questionNumber}" onclick="functionSelect()">
-				  		<input class="button" type="button" value="${currentQuestion.answers["b"]}" name="question${questionNumber}" onclick="functionSelect()">
+				 		<input class="button choice" type="button" value="${currentQuestion.answers["a"]}" name="question${questionNumber}" onclick="functionSelect()">
+				  		<input class="button choice" type="button" value="${currentQuestion.answers["b"]}" name="question${questionNumber}" onclick="functionSelect()">
 				  	</div>
   				</div>
   				<div class="row">
     				<div class=" btn-group">
-				    	<input class="button" type="button" value="${currentQuestion.answers["c"]}" name="question${questionNumber}" onclick="functionSelect()">
-				    	<input class="button" type="button" value="${currentQuestion.answers["d"]}" name="question${questionNumber}" onclick="functionSelect()">
+				    	<input class="button choice" type="button" value="${currentQuestion.answers["c"]}" name="question${questionNumber}" onclick="functionSelect()">
+				    	<input class="button choice" type="button" value="${currentQuestion.answers["d"]}" name="question${questionNumber}" onclick="functionSelect()">
 				 	</div>
   				</div>
   			</div>`
@@ -103,13 +112,13 @@
 		myQuestions.forEach( (currentQuestion, questionNumber) => {
 		  // find selected answer
 		  const answerContainer = answerContainers[questionNumber];
-		  const selector = `input[name=question${questionNumber}]:checked`;
+		  const selector = getUserAnswer();
 		  const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+		  console.log(userAnswer);
 		  // if answer is correct
 		  if(userAnswer === currentQuestion.correctAnswer){
 			// add to the number of correct answers
 			numCorrect++;
-				// color the answers green
 		  }
 		});
 		// show number of correct answers out of total

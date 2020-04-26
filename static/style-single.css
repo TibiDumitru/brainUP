@@ -175,6 +175,10 @@ button:hover{
   color: #EDD7C2;
 }
 
+.choice:focus {
+    background-color: red;
+}
+
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
