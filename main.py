@@ -183,7 +183,7 @@ def single_player(selected_category):
     cursor.execute('SELECT * FROM questions WHERE category=%s ORDER BY RAND() LIMIT 10', (selected_category,))
     questions_list = cursor.fetchall()
 
-    return render_template('single_player.html', questions_list=questions_list)
+    return render_template('single_player.html', questions_list=questions_list, selected_category=selected_category)
 
 
 @app.route('/home/single-player/categories', methods=['GET', 'POST'])
