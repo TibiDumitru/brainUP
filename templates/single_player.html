@@ -21,17 +21,20 @@
 			 <button style="display:none" id="previous">Previous Question</button>
 			 <button style="position: absolute; bottom: 100px; padding: 0" class="button" onclick="incrementQuestion()" id="next">Next Question</button>
 			 <p style="height:28px"></p>
-			 <button style="position: absolute; bottom: 100px; float:right; height: 40px; padding: 0" class="button" id="myBtn">Submit Quiz</button>
+			 <form method="POST">
+				 <button style="position: absolute; bottom: 100px; float:right; height: 40px; padding: 0" class="button" id="myBtn">Submit Quiz</button>
+				 <div id="final_score"></div>
+			</form>
 
-			 <div id="myModal" class="modal">
+			<div id="myModal" class="modal">
 
-				  <!-- Modal content -->
-				  <div class="modal-content" style="background-color:#EDD7C2; color:#1A253F;" >
+				<!-- Modal content -->
+				<div class="modal-content" style="background-color:#EDD7C2; color:#1A253F;" >
 					<span style="color:#1A253F" class="close">&times;</span>
 					<p>Your result is <div id="results"></div></p>
-				  </div>
-
 				</div>
+
+			</div>
 
          </div>
 
@@ -124,6 +127,7 @@
 			  }
 			});
 			// show number of correct answers out of total
+			final_scoreContainer.innerHTML = `${numCorrect}`;
 			resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
 		}
 	  }
@@ -163,6 +167,7 @@
 	  }
 
 	  // Variables
+	  const final_scoreContainer = document.getElementById('final_score');
 	  const quizContainer = document.getElementById('quiz');
 	  const resultsContainer = document.getElementById('results');
 	  const submitButton = document.getElementById('myBtn');

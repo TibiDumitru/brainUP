@@ -185,6 +185,24 @@ def single_player(selected_category):
 
     return render_template('single_player.html', questions_list=questions_list, selected_category=selected_category)
 
+@app.route('/home/single-player/<selected_category>', methods=['GET' , 'POST'])
+def send_results(selected_category):
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
+    account = cursor.fetchone()
+    username = account['username']
+    if request.method == 'POST':
+        score = request.form['final_score']
+        #score = str(score)
+        cursor.execute('INSERT INTO games(username, mode, category, score) VALUES \
+                               (%s, %s, %s, %s)', (username, 'single', selected_category, score))
+    else:
+        cursor.execute('INSERT INTO games(username, mode, category, score) VALUES \
+                               (%s, %s, %s, %s)', (username, 'single', selected_category, '123'))
+    mysql.connection.commit()
+    time.sleep(5)
+    return render_template('categories_select.html')
+
 
 @app.route('/home/single-player/categories', methods=['GET', 'POST'])
 def categories_select():
