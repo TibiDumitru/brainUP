@@ -47,6 +47,7 @@
 </body>
 </html>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
 
  var selected = null;
@@ -129,6 +130,13 @@
 			// show number of correct answers out of total
 			final_scoreContainer.innerHTML = `${numCorrect}`;
 			resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
+			$.ajax({
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                traditional: "true",
+                data: JSON.stringify(`${numCorrect}`),
+                dataType: "json"
+            });
 		}
 	  }
 
@@ -172,15 +180,14 @@
 	  const resultsContainer = document.getElementById('results');
 	  const submitButton = document.getElementById('myBtn');
 
-	  var selected_category = JSON.stringify({{questions_list | tojson | safe}});
 	  var questionsAux = JSON.stringify({{questions_list | tojson | safe}});
       var questionsData = JSON.parse(questionsAux);
+	  var selected_category = questionsData[0].category;
 	  var myQuestions = [];
 	  var i;
 
 	  for (i = 0; i < questionsData.length; i++) {
 	  	var question = questionsData[i];
-	  	//console.log(question.category)
 
 	  	ans = [];
 	  	ans.push(question.opt1);

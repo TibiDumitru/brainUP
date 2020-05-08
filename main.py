@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 from datetime import datetime
+import time
 import re
 
 app = Flask(__name__)
@@ -185,22 +186,19 @@ def single_player(selected_category):
 
     return render_template('single_player.html', questions_list=questions_list, selected_category=selected_category)
 
-@app.route('/home/single-player/<selected_category>', methods=['GET' , 'POST'])
+@app.route('/home/single-player/<selected_category>', methods=['POST'])
 def send_results(selected_category):
-    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
-    account = cursor.fetchone()
-    username = account['username']
-    if request.method == 'POST':
-        score = request.form['final_score']
-        #score = str(score)
+    if request.method == "POST":
+        score =  request.get_json()
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
+        account = cursor.fetchone()
+        username = account['username']
+        fs = str(score)
         cursor.execute('INSERT INTO games(username, mode, category, score) VALUES \
-                               (%s, %s, %s, %s)', (username, 'single', selected_category, score))
-    else:
-        cursor.execute('INSERT INTO games(username, mode, category, score) VALUES \
-                               (%s, %s, %s, %s)', (username, 'single', selected_category, '123'))
-    mysql.connection.commit()
-    time.sleep(5)
+                               (%s, %s, %s, %s)', (username, 'single', selected_category, fs))
+        mysql.connection.commit()
+        time.sleep(4)
     return render_template('categories_select.html')
 
 
