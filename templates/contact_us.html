@@ -18,26 +18,33 @@
 				    <button class="button-contact" onclick="qForm()">Suggest question</button>
 
 						<div class="form-popup" id="myForm">
-							<form action="{{ url_for('contact_us') }}" method="post" autocomplete="off" class="form-container">
-							  <input id="name" class="input" placeholder="Your name" name="name" required>
-							  <input id="email" class="input" placeholder="Your email" name="email" required>
+						  <form action="/action_page.php" class="form-container">
+							  <input class="input" placeholder="Your name" name="name" required>
+							  <input class="input" placeholder="Your email" name="email" required>
 							  <textarea id="msg" class="input" placeholder="Your Message" name="message" required></textarea>
 
 							  <div class="form-popup" id="qForm">
-								  <select  method="GET" action="/" id="category" class="custom-select" required name="category">
+								  <select id="show-on-q" class="custom-select" required name="category">
 									<option disabled selected>Choose category:</option>
-									{% for category in categories %}
-									<option value="{{category}}">{{category}}</option>
-				  					{% endfor %}
+									<option>Animals</option>
+									<option>Sport</option>
+									<option>Programming</option>
 								  </select>
 
-								   <textarea id="text" class="input" placeholder="Your question" name="question" required
+								   <textarea id="show-on-q1" class="input" placeholder="Your question" name="question" required
 								   style="height:20px;"></textarea>
-								   <input id="opt1" class="input" placeholder="Answer option 1" name="answer" required>
-								   <input id="opt2" class="input" placeholder="Answer option 2" name="answer" required>
-								   <input id="opt3" class="input" placeholder="Answer option 3" name="answer" required>
-								   <input id="correct" class="input" placeholder="Answer option 4" name="answer" required>
+								   <input id="show-on-q2" class="input" placeholder="Answer option 1" name="answer" required>
+								   <input id="show-on-q3" class="input" placeholder="Answer option 2" name="answer" required>
+								   <input id="show-on-q4" class="input" placeholder="Answer option 3" name="answer" required>
+								   <input id="show-on-q5" class="input" placeholder="Answer option 4" name="answer" required>
 
+								  	<select id="show-on-q6" class="custom-select" required name="correct">
+										<option disabled selected>Correct answer:</option>
+										<option>Option 1</option>
+										<option>Option 2</option>
+										<option>Option 3</option>
+										<option>Option 4</option>
+								  </select>
 							  </div>
 
 							<button type="submit" class="btn">Submit</button>
@@ -50,22 +57,24 @@
 						function hiForm() {
 						  document.getElementById("myForm").style.display = "block";
 						  document.getElementById("msg").style.display = "block";
-						  document.getElementById("category").style.display = "none";
-						  document.getElementById("text").style.display = "none";
-						  document.getElementById("opt1").style.display = "none";
-						  document.getElementById("opt2").style.display = "none";
-						  document.getElementById("opt3").style.display = "none";
-						  document.getElementById("correct").style.display = "none";
+						  document.getElementById("show-on-q").style.display = "none";
+						  document.getElementById("show-on-q1").style.display = "none";
+						  document.getElementById("show-on-q2").style.display = "none";
+						  document.getElementById("show-on-q3").style.display = "none";
+						  document.getElementById("show-on-q4").style.display = "none";
+						  document.getElementById("show-on-q5").style.display = "none";
+						  document.getElementById("show-on-q6").style.display = "none";
 						}
 						function qForm() {
 						  document.getElementById("myForm").style.display = "block";
 						  document.getElementById("qForm").style.display = "block";
-						  document.getElementById("category").style.display = "block";
-						  document.getElementById("text").style.display = "block";
-						  document.getElementById("opt1").style.display = "block";
-						  document.getElementById("opt2").style.display = "block";
-						  document.getElementById("opt3").style.display = "block";
-						  document.getElementById("correct").style.display = "block";
+						  document.getElementById("show-on-q").style.display = "block";
+						  document.getElementById("show-on-q1").style.display = "block";
+						  document.getElementById("show-on-q2").style.display = "block";
+						  document.getElementById("show-on-q3").style.display = "block";
+						  document.getElementById("show-on-q4").style.display = "block";
+						  document.getElementById("show-on-q5").style.display = "block";
+						  document.getElementById("show-on-q6").style.display = "block";
 						  document.getElementById("msg").style.display = "none";
 
 						}
