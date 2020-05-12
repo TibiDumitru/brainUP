@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 from datetime import datetime
+import time
 import re
 
 app = Flask(__name__)
@@ -57,6 +58,7 @@ def login():
             msg = "ERROR: Could not connect to MySQL!"
     # Show the login form with message (if any)
     return render_template('login.html', msg=msg)
+
 
 # http://localhost:5000/logout - this will be the logout page
 @app.route('/logout')
@@ -182,7 +184,23 @@ def single_player(selected_category):
     cursor.execute('SELECT * FROM questions WHERE category=%s ORDER BY RAND() LIMIT 10', (selected_category,))
     questions_list = cursor.fetchall()
 
-    return render_template('single_player.html', category=selected_category, questions_list=questions_list)
+    return render_template('single_player.html', questions_list=questions_list, selected_category=selected_category)
+
+@app.route('/home/single-player/<selected_category>', methods=['POST'])
+def send_results(selected_category):
+    if request.method == "POST":
+        score =  request.get_json()
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
+        account = cursor.fetchone()
+        username = account['username']
+        fs = str(score)
+        cursor.execute('INSERT INTO games(username, mode, category, score) VALUES \
+                               (%s, %s, %s, %s)', (username, 'single', selected_category, fs))
+        mysql.connection.commit()
+        time.sleep(4)
+
+    return render_template('show_score.html')
 
 
 @app.route('/home/single-player/categories', methods=['GET', 'POST'])
@@ -190,11 +208,44 @@ def categories_select():
     return render_template('categories_select.html')
 
 
-@app.route('/home/multi-player')
-def multi_player():
-    return render_template('multi_player.html')
+@app.route('/home/daily-challenge', methods=['GET'])
+def daily_challenge():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM questions ORDER BY RAND() LIMIT 10')
+    questions_list = cursor.fetchall()
 
+    return render_template('daily_challenge.html', questions_list=questions_list)
+
+@app.route('/home/daily-challenge', methods=['POST'])
+def send_daily_results():
+    if request.method == "POST":
+        score =  request.get_json()
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
+        account = cursor.fetchone()
+        username = account['username']
+        played_at = datetime.now()
+        fs = str(score)
+        cursor.execute('INSERT INTO challenges(username, mode, score, played_at) VALUES \
+                               (%s, %s, %s, %s)', (username, 'challenge', fs, played_at))
+        mysql.connection.commit()
+    return render_template('home.html')
+
+@app.route('/home/show_score')
+def show_score():
+    return render_template('show_score.html')
+
+@app.route('/home/ranking')
+def ranking():
+    return render_template('ranking.html')
 
 @app.route('/contact-us')
 def contact_us():
     return render_template('contact_us.html')
+
+@app.route('/leaderboard')
+def leaderboard():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM challenges LIMIT 10')
+    players = cursor.fetchall()
+    return render_template('leaderboard.html', players=players)

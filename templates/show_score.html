@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Score</title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,800%7CWork+Sans:200,300%7CJosefin+Sans:100" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style-categories.css') }}" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="btn-group btn-group-justified">
+                <button class="button" type="button" onclick="window.location.href='{{ url_for('categories_select') }}';">Play again</button>
+                <button class="button" type="button" onclick="window.location.href='{{ url_for('home') }}';">Home</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
