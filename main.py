@@ -12,10 +12,10 @@ app.secret_key = 'vinti_fara_restante'
 # database connection details
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'parola10'
+app.config['MYSQL_PASSWORD'] = 'root1234'
 app.config['MYSQL_DB'] = 'pythonlogin'
 
-# Intialize MySQL
+# Initialize MySQL
 mysql = MySQL(app)
 
 categories = ['Arts', 'Animals', 'Games', 'Geography', 'Movies', 'Music', 'Science', 'Programming', 'Sport', 'Literature']
@@ -195,9 +195,10 @@ def send_results(selected_category):
         account = cursor.fetchone()
         username = account['username']
         fs = str(score)
-        cursor.execute('INSERT INTO games(username, mode, category, score) VALUES \
+        if (int(fs) != 0):
+            cursor.execute('INSERT INTO games(username, mode, category, score) VALUES \
                                (%s, %s, %s, %s)', (username, 'single', selected_category, fs))
-        mysql.connection.commit()
+            mysql.connection.commit()
         time.sleep(4)
 
     return render_template('show_score.html')
@@ -226,19 +227,23 @@ def send_daily_results():
         username = account['username']
         played_at = datetime.now()
         fs = str(score)
-        cursor.execute('INSERT INTO challenges(username, mode, score, played_at) VALUES \
+        if (int(fs) != 0):
+            cursor.execute('INSERT INTO challenges(username, mode, score, played_at) VALUES \
                                (%s, %s, %s, %s)', (username, 'challenge', fs, played_at))
-        mysql.connection.commit()
+            mysql.connection.commit()
     return render_template('home.html')
 
 @app.route('/home/show_score')
 def show_score():
     return render_template('show_score.html')
 
-@app.route('/home/ranking')
-def ranking():
-    return render_template('ranking.html')
-
 @app.route('/contact-us')
 def contact_us():
     return render_template('contact_us.html')
+
+@app.route('/leaderboard')
+def leaderboard():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('select * from challenges WHERE played_at > CURRENT_DATE and played_at < ( CURRENT_DATE + 1) ORDER BY SCORE DESC LIMIT 10; ')
+    players = cursor.fetchall()
+    return render_template('leaderboard.html', players=players)

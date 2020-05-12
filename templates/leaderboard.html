@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style-leaderboard.css') }}">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+
+</head>
+<div id="content">
+    <img src="{{url_for('static', filename = 'logo.png')}}" class="ribbon"/>
+</div>
+<a href="{{ url_for('home') }}" style="
+		padding: 8px 8px 8px 32px;
+		text-decoration: none;
+		font-size: 25px;
+		color: #EDD7C2;
+		display: block;
+    	transition: 0.3s"><i class="fas fa-home"></i> Home</a>
+<div class="center">
+  <div class="top3">
+     <div class="item" style="background:#dbdbbd">
+       <img src="{{url_for('static', filename = 'second.png')}}" class="pic"/>
+      <div class="name">
+        {{players[1].username}}
+      </div>
+      <div class="score">
+        {{players[1].score}}
+      </div>
+    </div>
+    <div class="one item" style="background:#fafa82">
+      <img src="{{url_for('static', filename = 'firstt.png')}}" class="pic"/>
+      <div class="name">
+        {{players[0].username}}
+      </div>
+      <div class="score">
+        {{players[0].score}}
+      </div>
+    </div>
+    <div class="item" style="background:#e8c489">
+      <img src="{{url_for('static', filename = 'third.PNG')}}" class="pic"/>
+      <div class="name">
+        {{players[2].username}}
+      </div>
+      <div class="score">
+        {{players[2].score}}
+      </div>
+    </div>
+  </div>
+
+
+  <div class="list">
+    <div id="list1"></div>
+  </div>
+</div>
+
+  <script>
+    const list = document.getElementById('list1');
+    var playersAux = JSON.stringify({{players | tojson | safe}});
+    var playersData = JSON.parse(playersAux);
+    function buildList() {
+      var position;
+      const outputList = [];
+      for (position = 3; position < playersData.length; position++) {
+        outputList.push(
+          `<div class="item">
+            <div class="pos">
+              ${position + 1}
+             </div>
+             <img src="{{url_for('static', filename = 'avatar.PNG')}}" class="pic"/>
+             <div class="name">
+                ${playersData[position].username}
+             </div>
+             <div class="score">
+                ${playersData[position].score}
+              </div>
+              <div class="time">
+                ${playersData[position].time}
+              </div>
+              </div>`
+        )
+      }
+     list.innerHTML = outputList.join('');
+}
+
+    buildList();
+
+    </script>
