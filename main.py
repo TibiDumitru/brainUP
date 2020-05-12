@@ -199,7 +199,8 @@ def send_results(selected_category):
                                (%s, %s, %s, %s)', (username, 'single', selected_category, fs))
         mysql.connection.commit()
         time.sleep(4)
-    return render_template('categories_select.html')
+
+    return render_template('show_score.html')
 
 
 @app.route('/home/single-player/categories', methods=['GET', 'POST'])
@@ -207,10 +208,36 @@ def categories_select():
     return render_template('categories_select.html')
 
 
-@app.route('/home/multi-player')
-def multi_player():
-    return render_template('multi_player.html')
+@app.route('/home/daily-challenge', methods=['GET'])
+def daily_challenge():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM questions ORDER BY RAND() LIMIT 10')
+    questions_list = cursor.fetchall()
 
+    return render_template('daily_challenge.html', questions_list=questions_list)
+
+@app.route('/home/daily-challenge', methods=['POST'])
+def send_daily_results():
+    if request.method == "POST":
+        score =  request.get_json()
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
+        account = cursor.fetchone()
+        username = account['username']
+        played_at = datetime.now()
+        fs = str(score)
+        cursor.execute('INSERT INTO challenges(username, mode, score, played_at) VALUES \
+                               (%s, %s, %s, %s)', (username, 'challenge', fs, played_at))
+        mysql.connection.commit()
+    return render_template('home.html')
+
+@app.route('/home/show_score')
+def show_score():
+    return render_template('show_score.html')
+
+@app.route('/home/ranking')
+def ranking():
+    return render_template('ranking.html')
 
 @app.route('/contact-us')
 def contact_us():
