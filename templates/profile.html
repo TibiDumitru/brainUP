@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Home</title>
+    <title>My profile</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style-home.css') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 </head>
@@ -50,15 +50,18 @@ img {
 <div class="slideshow-container">
 
 <div class="mySlides">
-    <img src ="../static/img1.jpg">
+    <p> Your favorite category is []! </p>
+    <!-- img src ="../static/img1.jpg"> -->
 </div>
 
 <div class="mySlides">
-  <img src ="../static/img2.jpg">
+    <p> You have guessed right % of the questions! </p>
+    <!-- img src ="../static/img1.jpg"> -->
 </div>
 
 <div class="mySlides">
-  <img src ="../static/img3.jpg">
+    <p> You have played a total of [] games! </p>
+    <!-- img src ="../static/img1.jpg"> -->
 </div>
 
 <a class="prev" onclick="plusSlides(-1)">❮</a>
@@ -99,7 +102,7 @@ function showSlides(n) {
   }
   slides[slideIndex-1].style.display = "block";
   dots[slideIndex-1].className += " active";
-  setTimeout(showSlides, 5000); // Change image every 2 seconds
+  setTimeout(showSlides, 12500); // Change content every 5 seconds
 }
 </script>
 

@@ -189,16 +189,15 @@ def single_player(selected_category):
 @app.route('/home/single-player/<selected_category>', methods=['POST'])
 def send_results(selected_category):
     if request.method == "POST":
-        score =  request.get_json()
+        score = request.get_json()
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
         account = cursor.fetchone()
         username = account['username']
         fs = str(score)
-        if (int(fs) != 0):
-            cursor.execute('INSERT INTO games(username, mode, category, score) VALUES \
+        cursor.execute('INSERT INTO games(username, mode, category, score) VALUES \
                                (%s, %s, %s, %s)', (username, 'single', selected_category, fs))
-            mysql.connection.commit()
+        mysql.connection.commit()
         time.sleep(4)
 
     return render_template('show_score.html')
@@ -220,16 +219,27 @@ def daily_challenge():
 @app.route('/home/daily-challenge', methods=['POST'])
 def send_daily_results():
     if request.method == "POST":
-        score =  request.get_json()
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
-        account = cursor.fetchone()
-        username = account['username']
-        played_at = datetime.now()
-        fs = str(score)
-        if (int(fs) != 0):
-            cursor.execute('INSERT INTO challenges(username, mode, score, played_at) VALUES \
-                               (%s, %s, %s, %s)', (username, 'challenge', fs, played_at))
+        data = request.get_json()
+        if data != None:
+            score = data['result']
+            timeTaken = data['timeTaken']
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
+            account = cursor.fetchone()
+            username = account['username']
+            played_at = datetime.now()
+            fs = str(score)
+            timeTaken = str(timeTaken)
+            cursor.execute('select * from challenges WHERE played_at > CURRENT_DATE and played_at < ( CURRENT_DATE + 1) and username = %s', (username,))
+            entry = cursor.fetchone()
+            if (entry != None):
+                if (int(entry['score']) < int(fs)) or (int(entry['score']) == int(fs) and int(timeTaken) < int(entry['duration'])):
+                    cursor.execute(('DELETE FROM challenges WHERE id = {0}').format(entry['id']))
+                    cursor.execute('INSERT INTO challenges(username, mode, score, played_at, duration) VALUES \
+                               (%s, %s, %s, %s, %s)', (username, 'challenge', fs, played_at, timeTaken))
+            else:
+                cursor.execute('INSERT INTO challenges(username, mode, score, played_at, duration) VALUES \
+                               (%s, %s, %s, %s, %s)', (username, 'challenge', fs, played_at, timeTaken))
             mysql.connection.commit()
     return render_template('home.html')
 
@@ -244,6 +254,12 @@ def contact_us():
 @app.route('/leaderboard')
 def leaderboard():
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute('select * from challenges WHERE played_at > CURRENT_DATE and played_at < ( CURRENT_DATE + 1) ORDER BY SCORE DESC LIMIT 10; ')
+    cursor.execute('select * from challenges WHERE played_at > CURRENT_DATE and played_at < ( CURRENT_DATE + 1) ORDER BY SCORE DESC, DURATION LIMIT 10; ')
     players = cursor.fetchall()
+    dummy = dict()
+    dummy['username'] = 'None'
+    dummy['score'] = '0'
+    dummy['duration'] = '0'
+    while len(players) < 3:
+        players+= (dummy,)
     return render_template('leaderboard.html', players=players)
