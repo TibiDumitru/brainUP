@@ -32,6 +32,8 @@
 				</label>
 				<input type="password" name="password" placeholder="Password" id="password" required>
 
+				<input type="avatar" name="avatar" id="avatar" required value="avatar0.png" style="display:none">
+
 				<p style="color: #1A253F; font-size: 20px"> Choose your avatar! </p>
 				<div class="container-fluid">
   				<div class="row">
@@ -72,7 +74,7 @@
   				</div>
   			</div>
 				<div style="color: #ff007f" class="msg">{{ msg }}</div>
-				<input type="submit" value="Register" onclick="choose_avatar()">
+				<input type="submit" value="Register">
 			</form>
 		</div>
 	</body>
@@ -82,22 +84,11 @@
 <script>
 var final_avatar_name;
 
-function choose_avatar() {
-	console.log("aici");
-	console.log(final_avatar_name);
-
-	$.ajax({
-		  type: "POST",
-		  contentType: "application/json;charset=utf-8",
-		  traditional: "true",
-		  data : final_avatar_name,
-	   dataType: "json"
-	  });
-
-}
 
 function functionSelect(choice) {
 		final_avatar_name = "avatar"+choice+".PNG";
 	  	console.log(final_avatar_name);
+	  	document.getElementById("avatar").value = final_avatar_name;
 }
+
 </script>
