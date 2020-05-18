@@ -5,6 +5,7 @@
 		<title>Register</title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
 	</head>
 	<body class="body-log-reg">
 		<div class="register">
@@ -30,9 +31,73 @@
 					<i class="fas fa-lock"></i>
 				</label>
 				<input type="password" name="password" placeholder="Password" id="password" required>
-				<div class="msg">{{ msg }}</div>
-				<input type="submit" value="Register">
+
+				<p style="color: #1A253F; font-size: 20px"> Choose your avatar! </p>
+				<div class="container-fluid">
+  				<div class="row">
+    				<div class="btn-group">
+				 		<input style="width:10rem;
+				 					  height:10rem;
+				 					  vertical-align: middle;
+  									  border-radius: 50%;
+  									  background-color: white;
+									  background: url('../static/avatar0.png')"
+							   class="button" type="button" onclick="functionSelect(0)">
+						<input style="width:10rem;
+				 					  height:10rem;
+				 					  vertical-align: middle;
+  									  border-radius: 50%;
+  									  background-color: white;
+									  background: url('../static/avatar1.png')"
+							   class="button" type="button" onclick="functionSelect(1)">
+				  	</div>
+  				</div>
+  				<div class="row">
+    				<div class=" btn-group">
+						<input style="width:10rem;
+				 					  height:10rem;
+				 					  vertical-align: middle;
+  									  border-radius: 50%;
+  									  background-color: white;
+									  background: url('../static/avatar2.png')"
+							   class="button" type="button" onclick="functionSelect(2)">
+						<input style="width:10rem;
+				 					  height:10rem;
+				 					  vertical-align: middle;
+  									  border-radius: 50%;
+  									  background-color: white;
+									  background: url('../static/avatar3.png')"
+							   class="button" type="button" onclick="functionSelect(3)">
+				 	</div>
+  				</div>
+  			</div>
+				<div style="color: #ff007f" class="msg">{{ msg }}</div>
+				<input type="submit" value="Register" onclick="choose_avatar()">
 			</form>
 		</div>
 	</body>
 </html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var final_avatar_name;
+
+function choose_avatar() {
+	console.log("aici");
+	console.log(final_avatar_name);
+
+	$.ajax({
+		  type: "POST",
+		  contentType: "application/json;charset=utf-8",
+		  traditional: "true",
+		  data : final_avatar_name,
+	   dataType: "json"
+	  });
+
+}
+
+function functionSelect(choice) {
+		final_avatar_name = "avatar"+choice+".PNG";
+	  	console.log(final_avatar_name);
+}
+</script>

@@ -10,7 +10,7 @@
       <a id="home-single" href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a>
       <div class="bg-contact">
       <div class="container-contact">
-         <div class="wrap-contact left"  style="float:left">
+         <div class="wrap-contact left" style="float:left">
               <span class="contact-form-title">
 					Question number
 					 <input class="contact-form-title q-number" type="text" id="q-number" value="1"/>
@@ -26,12 +26,22 @@
 				 <div id="final_score"></div>
 			</form>
 
+			 <!-- Modal for SUBMIT -->
 			<div id="myModal" class="modal">
-
-				<!-- Modal content -->
-				<div class="modal-content" style="background-color:#EDD7C2; color:#1A253F;" >
+				<div class="modal-content" style="background-color:#EDD7C2; color:#1A253F;">
 					<span style="color:#1A253F" class="close">&times;</span>
 					<p>Your result is <div id="results"></div></p>
+				</div>
+
+			</div>
+
+			   <!-- Modal for START -->
+			 <div id="myModalStart" class="modal-start">
+				<div class="modal-content-start">
+					<button class="button-start" onclick="start_time()">StartQuiz</button>
+					<button class="button-home" style="margin-top: 100px; margin-right: -70px;">
+						<a href="{{ url_for('home') }}" style="color: #1A253F;">
+							<i class="fas fa-home" style="color: #1A253F;"></i> Not ready yet </a></button>
 				</div>
 
 			</div>
@@ -53,6 +63,7 @@
  var selected = null;
  var givenAnswers = [];
  var pag = 0;
+ var tTaken = 5;
 
  function incrementQuestion()
  {
@@ -83,14 +94,14 @@
 			`<div class="container-fluid">
   				<div class="row">
     				<div class="btn-group">
-				 		<input class="button choice" type="button" value="${currentQuestion.answers["a"]}" name="question${questionNumber}" onclick="functionSelect(0)">
-				  		<input class="button choice" type="button" value="${currentQuestion.answers["b"]}" name="question${questionNumber}" onclick="functionSelect(1)">
+				 		<input class="button choice" type="button" value="${currentQuestion.answers["a"]}" name="question${questionNumber}" onclick="functionSelect(0)" style="font-size:12px; padding:0; white-space: normal;">
+				  		<input class="button choice" type="button" value="${currentQuestion.answers["b"]}" name="question${questionNumber}" onclick="functionSelect(1)" style="font-size:12px; padding:0; white-space: normal;">
 				  	</div>
   				</div>
   				<div class="row">
     				<div class=" btn-group">
-				    	<input class="button choice" type="button" value="${currentQuestion.answers["c"]}" name="question${questionNumber}" onclick="functionSelect(2)">
-				    	<input class="button choice" type="button" value="${currentQuestion.answers["d"]}" name="question${questionNumber}" onclick="functionSelect(3)">
+				    	<input class="button choice" type="button" value="${currentQuestion.answers["c"]}" name="question${questionNumber}" onclick="functionSelect(2)" style="font-size:12px; padding:0; white-space: normal;">
+				    	<input class="button choice" type="button" value="${currentQuestion.answers["d"]}" name="question${questionNumber}" onclick="functionSelect(3)" style="font-size:12px; padding:0; white-space: normal;">
 				 	</div>
   				</div>
   			</div>`
@@ -109,6 +120,7 @@
 	  }
 
 	  function showResults(){
+	  	end_time();
 	    if (selected != null) {
 	    	givenAnswers.push(selected.value);
 			// gather answer containers from our quiz
@@ -130,15 +142,21 @@
 			// show number of correct answers out of total
 			final_scoreContainer.innerHTML = `${numCorrect}`;
 			resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
-			$.ajax({
-                type: "POST",
-                contentType: "application/json;charset=utf-8",
-                traditional: "true",
-                data: JSON.stringify(`${numCorrect}`),
-                dataType: "json"
-            });
-		}
-	  }
+			console.log("end result");
+		    jsonArr = {'result': `${numCorrect}`,
+                    'timeTaken':  `${tTaken}`
+            };
+            jsonArr = JSON.stringify(jsonArr);
+
+	        $.ajax({
+                  type: "POST",
+                  contentType: "application/json;charset=utf-8",
+                  traditional: "true",
+                  data : jsonArr,
+               dataType: "json"
+              });
+		    }
+    	}
 
 	  function showSlide(n) {
 		slides[currentSlide].classList.remove('active-slide');
@@ -236,7 +254,31 @@
 	  nextButton.addEventListener("click", showNextSlide);
 	})();
 
-	// SCRIPT FOR MODAL
+	// SCRIPT FOR ELAPSED TIME
+	var startTime, endTime, seconds;
+
+	function start_time() {
+	  startTime = new Date();
+	  console.log("start time: " + startTime);
+	  modal_start.style.display = "none";
+	};
+
+	function end_time() {
+	  endTime = new Date();
+	  var timeDiff = endTime - startTime; //in ms
+	  // strip the ms
+	  timeDiff /= 1000;
+
+	  // get seconds
+	  seconds = Math.round(timeDiff);
+	  console.log("end time: " + endTime);
+	  console.log("elapsed seconds: " + seconds);
+	  // TRIMITE TIMPUL DE AICI IN VARIABILA
+      tTaken = seconds;
+      console.log("time: " + tTaken);
+	}
+
+	// SCRIPT FOR MODAL -> SUBMIT QUIZ
 	// Get the modal
 	var modal = document.getElementById("myModal");
 
@@ -263,4 +305,11 @@
 		modal.style.display = "none";
 	  }
 	}
+
+	// SCRIPT FOR MODAL -> START QUIZ
+	// Get the modal
+	var modal_start = document.getElementById("myModalStart");
+
+	// Open the modal on start of page
+	 modal_start.style.display = "block";
 </script>

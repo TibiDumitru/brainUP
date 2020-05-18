@@ -15,7 +15,7 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'root1234'
 app.config['MYSQL_DB'] = 'pythonlogin'
 
-# Intialize MySQL
+# Initialize MySQL
 mysql = MySQL(app)
 
 categories = ['Arts', 'Animals', 'Games', 'Geography', 'Movies', 'Music', 'Science', 'Programming', 'Sport', 'Literature']
@@ -85,6 +85,10 @@ def register():
         email = request.form['email']
         name = request.form['name']
         registered_on = datetime.now()
+
+        avatar = request.get_json()
+        print(avatar)
+
         # Check if account exists using MySQL
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
@@ -108,8 +112,8 @@ def register():
             msg = 'Please fill out the form!'
         else:
             # Account doesn't exist and the form data is valid, now insert new account into accounts table
-            cursor.execute('INSERT INTO accounts(username, password, name, email, registered_on) VALUES\
-                           (%s, %s, %s, %s, %s)', (username, password, name, email, registered_on))
+            cursor.execute('INSERT INTO accounts(username, password, name, email, registered_on, avatar) VALUES\
+                           (%s, %s, %s, %s, %s, %s)', (username, password, name, email, registered_on, avatar))
             mysql.connection.commit()
             msg = 'You have successfully registered!'
     elif request.method == 'POST':
@@ -140,10 +144,32 @@ def profile():
         cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
         account = cursor.fetchone()
         # Show the profile page with account info
-        return render_template('profile.html', account=account)
+
+        cursor.execute('SELECT category, COUNT(*) from games where username= %s GROUP BY category order by 2 desc', (account['username'],))
+        most_played = cursor.fetchone()
+        if most_played is None:
+            most_played = 'default'
+        else:
+            most_played = most_played['category']
+
+        cursor.execute('SELECT COUNT(*) FROM games WHERE username = %s', (account['username'],))
+        total_played=cursor.fetchone()
+        total_played=total_played['COUNT(*)']
+
+        cursor.execute('SELECT SUM(score) from games where username= %s', (account['username'],))
+        total_score = cursor.fetchone()
+        if total_score is None:
+            guessed_questions= '0'
+        else:
+            total_score = total_score['SUM(score)']
+            guessed_questions = str(round(total_score/ total_played * 10, 2))
+
+        return render_template('profile.html', account=account,
+            most_played=most_played,
+            total_played=total_played,
+            guessed_questions=guessed_questions,)
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
-
 
 @app.route('/questions', methods=['GET', 'POST'])
 def questions():
@@ -189,7 +215,7 @@ def single_player(selected_category):
 @app.route('/home/single-player/<selected_category>', methods=['POST'])
 def send_results(selected_category):
     if request.method == "POST":
-        score =  request.get_json()
+        score = request.get_json()
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
         account = cursor.fetchone()
@@ -219,25 +245,33 @@ def daily_challenge():
 @app.route('/home/daily-challenge', methods=['POST'])
 def send_daily_results():
     if request.method == "POST":
-        score =  request.get_json()
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
-        account = cursor.fetchone()
-        username = account['username']
-        played_at = datetime.now()
-        fs = str(score)
-        cursor.execute('INSERT INTO challenges(username, mode, score, played_at) VALUES \
-                               (%s, %s, %s, %s)', (username, 'challenge', fs, played_at))
-        mysql.connection.commit()
+        data = request.get_json()
+        if data != None:
+            score = data['result']
+            timeTaken = data['timeTaken']
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
+            account = cursor.fetchone()
+            username = account['username']
+            played_at = datetime.now()
+            fs = str(score)
+            timeTaken = str(timeTaken)
+            cursor.execute('select * from challenges WHERE played_at > CURRENT_DATE and played_at < ( CURRENT_DATE + 1) and username = %s', (username,))
+            entry = cursor.fetchone()
+            if (entry != None):
+                if (int(entry['score']) < int(fs)) or (int(entry['score']) == int(fs) and int(timeTaken) < int(entry['duration'])):
+                    cursor.execute(('DELETE FROM challenges WHERE id = {0}').format(entry['id']))
+                    cursor.execute('INSERT INTO challenges(username, mode, score, played_at, duration) VALUES \
+                               (%s, %s, %s, %s, %s)', (username, 'challenge', fs, played_at, timeTaken))
+            else:
+                cursor.execute('INSERT INTO challenges(username, mode, score, played_at, duration) VALUES \
+                               (%s, %s, %s, %s, %s)', (username, 'challenge', fs, played_at, timeTaken))
+            mysql.connection.commit()
     return render_template('home.html')
 
 @app.route('/home/show_score')
 def show_score():
     return render_template('show_score.html')
-
-@app.route('/home/ranking')
-def ranking():
-    return render_template('ranking.html')
 
 @app.route('/contact-us')
 def contact_us():
@@ -246,6 +280,12 @@ def contact_us():
 @app.route('/leaderboard')
 def leaderboard():
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute('SELECT * FROM challenges LIMIT 10')
+    cursor.execute('select * from challenges WHERE played_at > CURRENT_DATE and played_at < ( CURRENT_DATE + 1) ORDER BY SCORE DESC, DURATION LIMIT 10; ')
     players = cursor.fetchall()
+    dummy = dict()
+    dummy['username'] = 'None'
+    dummy['score'] = '0'
+    dummy['duration'] = '0'
+    while len(players) < 3:
+        players+= (dummy,)
     return render_template('leaderboard.html', players=players)
